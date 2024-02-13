@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="seller-management">
+	
+	<select id="getSellers" parameterClass="map" resultClass="dto.admin.SellerManagementDto">
+		
+		SELECT  DISTINCT
+		     	A.seller_no 		as no,
+				A.seller_name 		as name,
+				A.seller_id 		as id,
+				LISTAGG(D.short_service_name, ', ') WITHIN GROUP (ORDER BY D.service_no) OVER (PARTITION BY A.seller_no) as service,
+				A.seller_tel 		as tel,
+				A.seller_reg_date	as regDate
+				
+		FROM	seller A, seller_info B, seller_support_services C, seller_services D
+		
+		WHERE	A.seller_no = B.seller_no
+		AND		B.seller_info_no = C.seller_info_no
+		AND 	C.service_no = D.service_no
+		AND 	seller_del_yn = 'N'
+		      	
+      	<isEqual property="opt" compareValue="id">
+	  	AND A.seller_id like '%'||#keyword#||'%'
+	  	</isEqual>
+      	<isEqual property="opt" compareValue="name">
+	  	AND A.seller_name like '%'||#keyword#||'%'
+	  	</isEqual>
+      	<isEqual property="opt" compareValue="tel">
+	  	AND A.seller_tel = #keyword#
+	  	</isEqual>
+	  	<isNotNull property="fromDate">
+	  	AND A.seller_reg_date >= #fromDate# 
+	  	</isNotNull>
+	  	<isNotNull property="toDate">
+	   	AND A.seller_reg_date &lt; to_date(#toDate#) + 1
+	  	</isNotNull>
+	
+		<isEqual property="service" compareValue="1">
+		AND D.service_name = #service#
+		</isEqual>
+		<isEqual property="service" compareValue="2">
+		AND D.service_name = #service#
+		</isEqual>
+		<isEqual property="service" compareValue="3">
+		AND D.service_name = #service#
+		</isEqual>
+		<isEqual property="service" compareValue="4">
+		AND D.service_name = #service#
+		</isEqual>
+			  
+		ORDER BY A.seller_no desc	   
+
+	</select>
+
+</sqlMap>

@@ -159,7 +159,7 @@ Conflict          : 합병할때 충돌일어나서 수정한 경우
 -----
 
 
-### 🧩 ERD (노란색)  <a name="ERD"></a>
+### 🧩 ERD (노란색)  <a name="모델링"></a>
 ![뭅뭅ERD](https://github.com/taewan625/ezmeal-personal/assets/86302876/40f486f1-1abc-420f-aa7a-5f1431319849)
 
 -----

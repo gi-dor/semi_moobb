@@ -1,3 +1,5 @@
+<%@page import="vo.BoardImage"%>
+<%@page import="dao.BoardImageDao"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.ReplyDao"%>
 <%@page import="vo.Reply"%>
@@ -42,9 +44,11 @@
                 // 2. mapper 작성 ,DAO 작성
                 // 3. BOARD 테이블에 대한 CRUD 기능을 제공하는 BoardDao 객체 생성
                 BoardDao boardDao = new BoardDao();
+                BoardImageDao boardImageDao = new BoardImageDao();
 
                 // BoardDao 객체의 getBoardByNo(int no) 를 실행해서 게시글 상세정보를 조회한다
                 Board board = boardDao.getBoardByNo(no);
+                
                 
                 // ReplyDao 의 getRepliesByBoardNo() 메서드를 실행해서 해당 게시글의 댓글을 전부조회하기
                 ReplyDao replyDao = new ReplyDao();
@@ -54,7 +58,7 @@
                 LoginUser loginUser = (LoginUser) session.getAttribute("LOGIN_USER");
                 
                 // 이미지 파일 조회하기
-                
+                List<String> imageList =  boardImageDao.getBoardImages(no);
                 
       %>
             
@@ -67,7 +71,6 @@
 			   			<col width="35%">
 			   		</colgroup>
 		        	<tbody>
-						</tr>      
 		            	<tr> 
 		                	<th>구분</th>
 		                	<td colspan="3"><%=board.getBoardCategory().getName() %></td>
@@ -89,18 +92,18 @@
 			                <td><%=DateUtils.toText(board.getRegDate())%></td> 
 			            </tr>   
 			            <tr>
+		                	<th>본문내용</th>
+			                <td colspan="3"><%=board.getContent()%></td> 
+			            </tr>
+			            <tr>
 <%
-      	for(FileBoard fb : fileBoardList) {
+      	for(String filename : imageList ) {
 %>
 			            
 			                <td>첨부파일</td> 
 			                <td colspan="3">
-			                 <a href="download?no=<%=fb.getNo()%>"><%=fb.getFileName() %></a>
+			                 <img class="img-thumbnail" src="/resources/images/board/<%=filename%>">
 			                </td> 
-			            </tr>
-			            <tr>
-		                	<th>본문내용</th>
-			                <td colspan="3"><%=board.getContent()%></td> 
 			            </tr>
 <%
        	}

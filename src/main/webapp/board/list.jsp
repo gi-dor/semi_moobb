@@ -85,22 +85,25 @@
 	
 %>
 
-				
-				
 				<!-- 글쓰기버튼(회원일때/아닐때) -->
-				<div class="position-absolute top-30 end-0">
+				 <div class="row justify-content-end">
+				 	<div class="col-auto">
+				 		<div class="d-grid gap-1">
 <%
 	if(loginUser != null) {
 %>
-					<a class="btn btn-outline-primary btn-lg mb-3" href="insertform.jsp">글쓰기</a>
+					<a class="btn btn btn-primary btn-lg mb-4" href="insertform.jsp">글쓰기</a>
 <%
 	} else {
 %>
-					<a class="btn btn-outline-primary btn-lg mb-3 disabled aria-disabled="true">글쓰기</a>
+					<a class="btn btn btn-primary btn-lg mb-4 disabled aria-disabled="true">글쓰기</a>
 <%
 	}
 %>
+						</div>
+					</div>
 				</div>
+				
 				<form id="form-search"
 					class="d-flex justify-content-between align-items-center"
 					method="get" action="list.jsp">
@@ -158,6 +161,7 @@
 						</div>
 					</div>
 				</form>
+	
 
 <%
 	if (boardList.isEmpty()) {

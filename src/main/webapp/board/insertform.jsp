@@ -100,6 +100,8 @@
 				 -->	
 					</div>
 				</div>
+				
+			<!-- 첨부파일 -->	
 				<div class="form-group mb-3">
 					<label class="form-label">제목</label> 
 					<input type="text" class="form-control" name="title">
@@ -108,7 +110,7 @@
 					<label class="form-label">내용</label> 
 					<textarea class="form-control" name="content" placeholder="내용을 입력하세요." id="floatingTextarea" ></textarea>
 				</div>
-				<div class="form-group mb-3 ">
+				<div class="form-group mb-3 " >
 					<label class="form-label">첨부파일</label> 
 					<input type="file" class="form-control" name="upfile">
 				</div>

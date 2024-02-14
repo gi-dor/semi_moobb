@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
 	<div class="container-fluid" style="background-color: #0000">
 			<a class="navbar-brand" href="/index.jsp">
 
-	          <img alt="logo" src="/resources/images/comm//logo.png" width="50px" height="auto" class="d-inline-block align-text-mid" />
+	          <img alt="logo" src="/resources/images/comm/logo.png" width="50px" height="auto" class="d-inline-block align-text-mid" />
 	          wouldYou
 	        </a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

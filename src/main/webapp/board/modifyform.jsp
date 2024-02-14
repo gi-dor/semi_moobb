@@ -1,3 +1,13 @@
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.io.IOUtils"%>
+<%@page import="java.io.FileOutputStream"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="org.apache.commons.fileupload2.core.DiskFileItem"%>
+<%@page import="org.apache.commons.fileupload2.jakarta.JakartaServletDiskFileUpload"%>
+<%@page import="org.apache.commons.fileupload2.core.DiskFileItemFactory"%>
+<%@page import="dto.LoginUser"%>
+<%@page import="dao.BoardImageDao"%>
 <%@page import="dao.SellerProfileDao"%>
 <%@page import="vo.Board"%>
 <%@page import="vo.Location"%>
@@ -32,21 +42,22 @@
 		int no = Integer.valueOf(request.getParameter("no"));
 		int currentPage = Integer.valueOf(request.getParameter("page"));
 		
-		// BoardDao  생성
+        
+        // BoardDao  생성
 		BoardDao boardDao = new BoardDao();
 		
 		// BoardDao객체의 getBoardByNo(int no)를 실행해서 게시글 상세정보 조회
         Board board = boardDao.getBoardByNo(no);
+        int boardNo = boardDao.getBoardNo();  		
 		
-		// 지역, 서비스 산텍(selectbox 사용관련)
+		// 지역, 서비스 선택(selectbox 사용관련)
 		SellerProfileDao sellerProfileDao = new SellerProfileDao();
 		List<BoardCategory> boardCateList = boardDao.getAllBoardCategories(); 
 		List<SellerService> serviceList = sellerProfileDao.getAllServices();
 		List<Location> locationList = boardDao.getSidoLocations();
 		
-		
 	%>
-			<form class="border p-3" method="post" action="modify.jsp">
+			<form class="border p-3" method="post" action="modify.jsp" enctype="multipart/form-data">
 			    <input type="hidden" name="no" value="<%=no %>">
                 <input type="hidden" name="page" value="<%=currentPage %>">
 				<div class="form-group mb-3">
@@ -56,7 +67,7 @@
 	<%
 			for(BoardCategory cate : boardCateList ){
 	%>
-						<option value="<%= cate.getNo()%>"><%=cate.getName() %></option>
+						<option value="<%= cate.getNo()%>" <%=board.getBoardCategory().getNo() == cate.getNo() ? "selected" :"" %>><%=cate.getName() %></option>
 	<%
 			}
 	%>
@@ -70,7 +81,7 @@
 	<%
 			for (SellerService service : serviceList) {
 	%>
-							<option value="<%=service.getNo()%>"><%=service.getName() %></option>
+							<option value="<%=service.getNo()%>" <%=board.getSellerService().getNo() == service.getNo() ? "selected" :"" %>><%=service.getName() %></option>
 	<%
 			}
 	%>
@@ -93,7 +104,7 @@
 <%
 		for(Location list : locationList) {
 	%>
-			<option value="<%= list.getNo()%>"><%=list.getSidoName() %></option>
+			<option value="<%= list.getNo()%>" <%=board.getLocation().getNo() == list.getNo() ? "selected" :"" %>><%=list.getSidoName() %></option>
 		
 
 	<%	
@@ -110,11 +121,11 @@
 				</div>
 				<div class="form-group mb-3">
 					<label class="form-label">제목</label> 
-					<input type="text" class="form-control" name="title">
+					<input type="text" class="form-control" name="title" value="<%=board.getTitle() %>">
 				</div>
 				<div class="from-group mb-3">
 					<label class="form-label">내용</label> 
-					<textarea class="form-control" name="content" placeholder="내용을 입력하세요." id="floatingTextarea" ></textarea>
+					<textarea class="form-control" name="content" placeholder="내용을 입력하세요." id="floatingTextarea" ><%=board.getContent()%></textarea>
 				</div>
 				<div class="form-group mb-3 ">
 					<label class="form-label">첨부파일</label> 

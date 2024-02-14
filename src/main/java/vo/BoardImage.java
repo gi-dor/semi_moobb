@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class BoardImage {
 	private Board board;
-	private String Filename;
+	private String fileName;
 	private Users users;
 	private String delYn;
 	private Date updateDate;
 	private Date regDate;
+	
 	
 	public BoardImage() {}
 	
@@ -20,13 +21,6 @@ public class BoardImage {
 		this.board = board;
 	}
 
-	public String getFilename() {
-		return Filename;
-	}
-
-	public void setFilename(String filename) {
-		Filename = filename;
-	}
 
 	public Users getUsers() {
 		return users;
@@ -59,7 +53,15 @@ public class BoardImage {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
-	
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	
 
 

@@ -112,6 +112,7 @@ WHERE
 		SELECT
 		    B.BOARD_NO            AS no,
 		    B.BOARD_TITLE         AS title,
+		    bc.cate_no            as "boardCategory.no",
 		    bc.cate_name          as "boardCategory.name",
 		    B.USER_NO             AS "users.no",
 		    U.USER_ID             AS "users.id",
@@ -123,8 +124,10 @@ WHERE
 		    B.BOARD_REG_DATE      AS regDate,
 		    B.BOARD_UPDATE_DATE   AS updateDate,
 		    s.SERVICE_name        AS "sellerService.name",
+		    s.SERVICE_no          AS "sellerService.no",
 		    l.LOCATION_sido_name  AS "location.sidoName",
-		    bc.cate_name          AS "cate.name"
+		    l.LOCATION_no    AS "location.no"
+		   		    
 		FROM
 		    board B,
 		    users U,
@@ -139,11 +142,17 @@ WHERE
 		    AND B.LOCATION_NO = l.LOCATION_NO
 	</select>
 
+
+	<select id="getBoardNo" resultClass="int">
+		select BOARDS_SEQ.NEXTVAL
+		from dual
+	</select>
+
 	<!-- 게시글 등록 -->
 	<insert id="insertBoard" parameterClass="vo.Board">
     insert into board
     (board_no , board_title, board_content, cate_no,user_no, location_no, service_no)
-    VALUES (BOARDS_SEQ.NEXTVAL, #title#, #content#, #boardCategory.no#,#users.no#, #location.no#, #sellerService.no#)
+    VALUES (#no#, #title#, #content#, #boardCategory.no#,#users.no#, #location.no#, #sellerService.no#)
 	</insert>
 
 
@@ -201,27 +210,27 @@ WHERE
 	</select>
 	
 	<select id="getRandomBoard" resultClass="vo.Board">
-			select 
-	                board_title 	as "title",
-	                board_content 	as "content", 
-	                user_name 		as "users.name", 
-	                board_reg_date	as "regDate"
-		    from 
-		        (
-		             select 
-		                    a.board_title 		, 
-		                    a.board_content		,
-		                    b.user_name			,
-		                    a.board_reg_date
-		                from 
-		                    board A , Users B
-		                where A.user_no = B.user_no    
-		               order by dbms_random.value
-		        )
-		    where
-		        rownum &lt;5
+         select 
+                   board_title    as "title",
+                   board_content    as "content", 
+                   user_name       as "users.name", 
+                   board_reg_date   as "regDate"
+          from 
+              (
+                   select 
+                          a.board_title       , 
+                          a.board_content      ,
+                          b.user_name         ,
+                          a.board_reg_date
+                      from 
+                          board A , Users B
+                      where A.user_no = B.user_no    
+                     order by dbms_random.value
+              )
+          where
+              rownum &lt;5
           
-	</select>
+   </select>
 	
 	
 	

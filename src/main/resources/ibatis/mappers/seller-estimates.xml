@@ -169,7 +169,7 @@
 			and S.user_estimate_no = E.user_estimate_no
 			and E.user_no = U.user_no
 			and S.status_no = #statusNo#
-			order by S.user_estimate_no
+		order by S.seller_estimate_reg_date desc
 	</select>
 	
 	<select id="getSellerEstimateById" parameterClass="int" resultClass="vo.SellerEstimate">

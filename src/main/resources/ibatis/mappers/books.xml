@@ -31,39 +31,59 @@
 
 	<select id="getBooks" parameterClass="map" resultClass="dto.admin.BookDto">
 		
-		SELECT		A.user_estimate_no				AS bookNo,
-					B.user_name						AS name,
-					B.user_tel						AS tel,
-					A.user_estimate_update_date 	AS updateDate
+		SELECT		user_estimate_no 			AS bookNo,				
+					name,		
+					tel,						
+					user_estimate_update_date 	AS updateDate
 				 
-		FROM		user_estimate A, users B
+		FROM		(SELECT  row_number() over (order by A.user_estimate_no desc) AS num,
+							 A.user_estimate_no,
+							 B.user_name										  AS name,
+							 B.user_tel											  AS tel,
+							 A.user_estimate_update_date 	
+							 	
+					 FROM  	 user_estimate A, users B
+					 
+					 WHERE   A.user_estimate_del_yn = 'N'
+					 AND	 A.user_no = B.user_no
+					 
+					 <isNotNull property="fromDate">
+					 AND	 A.user_estimate_update_date >= #fromDate#
+					 </isNotNull>
+					 
+					 <isNotNull property="toDate">
+					 AND	 A.user_estimate_update_date &lt; to_date(#toDate#) + 1
+					 </isNotNull>
+					 
+					 <isEqual property="opt" compareValue="no">
+					 AND 	 A.user_estimate_no = #keyword#
+					 </isEqual>
+					 
+					 <isEqual property="opt" compareValue="name">
+					 AND	 B.user_no in(SELECT user_no
+										  FROM users
+										  WHERE user_name = #keyword#)			
+					 </isEqual>
+					 
+					 <isEqual property="opt" compareValue="id">
+					 AND	 B.user_no in(SELECT user_no
+										  FROM users
+										  WHERE user_id = #keyword#)			
+					 </isEqual>
+					 ) 
 		
-		WHERE		A.user_estimate_del_yn = 'N'
-		AND			A.user_no = B.user_no
+		WHERE		num between #begin# and #end#
 		
-		<isNotNull property="fromDate">
-		AND			A.user_estimate_update_date >= #fromDate#
-		</isNotNull>
-		<isNotNull property="toDate">
-		AND			A.user_estimate_update_date &lt; to_date(#toDate#) + 1
-		</isNotNull>
-		<isEqual property="opt" compareValue="no">
-		AND 		A.user_estimate_no = #keyword#
-		</isEqual>
-		<isEqual property="opt" compareValue="name">
-		AND			B.user_name = #keyword#
-		</isEqual>
-		<isEqual property="opt" compareValue="id">
-		AND			B.user_id = #keyword#
-		</isEqual>
-		<isEqual property="bookStatus" compareValue="complete">
-		AND 		D.status_name = '낙찰'
-		</isEqual>
-		<isEqual property="bookStatus" compareValue="waiting">
-		AND 		D.status_name = '응찰'
-		</isEqual>
-		
-		ORDER BY	A.user_estimate_no desc
+		ORDER BY	
+					<isEqual property="sort" compareValue="name">
+						name asc,
+					</isEqual>	
+					
+					<isEqual property="sort" compareValue="date">
+						user_estimate_update_date desc,
+					</isEqual>	
+					
+					user_estimate_no desc
 	</select>
 	
 	<!-- modifyform.jsp에서 사용 ************************************************************************ -->
@@ -129,4 +149,40 @@
 	</update>
 	
 	<!-- ****************************************************************************************** -->
+	
+	<!--  페이징 처리 ******************************************************************************** -->
+	<select id="getTotalRows" parameterClass="map" resultClass="int">
+
+		SELECT		count(*)
+		
+		FROM		user_estimate
+		
+		WHERE		user_estimate_del_yn = 'N'	
+		<isNotNull property="fromDate">
+		AND			user_estimate_update_date >= #fromDate#
+		</isNotNull>
+		
+		<isNotNull property="toDate">
+		AND			user_estimate_update_date &lt; to_date(#toDate#) + 1
+		</isNotNull>
+		
+		<isEqual property="opt" compareValue="no">
+		AND 		user_estimate_no = #keyword#
+		</isEqual>
+		
+		<isEqual property="opt" compareValue="name">
+		AND			user_no in(SELECT user_no
+							   FROM users
+							   WHERE user_name = #keyword#)			
+		</isEqual>
+		
+		<isEqual property="opt" compareValue="id">
+		AND			user_no in(SELECT user_no
+							   FROM users
+							   WHERE user_id = #keyword#)			
+		</isEqual>
+
+	</select>
+	<!-- ****************************************************************************************** -->
+	
 </sqlMap>

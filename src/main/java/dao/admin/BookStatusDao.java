@@ -50,6 +50,8 @@ private SqlMapClient ibatis = IbatisUtil.getSqlMapClient();
 	
 	// ---------------------------------------------------------------------------------------------------
 	
-	
+	public int getTotalRows(Map<String, Object> param) throws SQLException {
+		return (Integer) ibatis.queryForObject("books.getTotalRows", param);
+	}
 	
 }

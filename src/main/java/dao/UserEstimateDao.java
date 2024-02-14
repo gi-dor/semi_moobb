@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.User;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 

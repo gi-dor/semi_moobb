@@ -14,7 +14,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import ibatis.IbatisUtil;
 
 public class BoardDao {
-	private SqlMapClient ibatis = IbatisUtil.getSqlMapClient();
+   private SqlMapClient ibatis = IbatisUtil.getSqlMapClient();
 
     /**
      * 신규 게시글 정보가 포함된 Board 객체를 전달받아 게시글 정보를 테이블에 저장한다
@@ -34,8 +34,8 @@ public class BoardDao {
      * @throws SQLException
      */
     @SuppressWarnings("unchecked")
-	public List<BoardCategory> getAllBoardCategories() throws SQLException {
-    	return (List<BoardCategory>)ibatis.queryForList("boards.getAllBoardCategories");
+   public List<BoardCategory> getAllBoardCategories() throws SQLException {
+       return (List<BoardCategory>)ibatis.queryForList("boards.getAllBoardCategories");
     }
     
     /**
@@ -44,8 +44,8 @@ public class BoardDao {
      * @throws SQLException
      */
     @SuppressWarnings("unchecked")
-	public List<Location> getSidoLocations() throws SQLException {
-    	return (List<Location>)ibatis.queryForList("boards.getSidoLocations");
+   public List<Location> getSidoLocations() throws SQLException {
+       return (List<Location>)ibatis.queryForList("boards.getSidoLocations");
     }
     
     
@@ -71,6 +71,10 @@ public class BoardDao {
         return (Integer) ibatis.queryForObject("boards.getTotalRows",param);
     }
     
+    
+    public int getBoardNo() throws SQLException {
+       return (Integer) ibatis.queryForObject("boards.getBoardByNo");
+    }
    
    
     /**
@@ -86,24 +90,13 @@ public class BoardDao {
         return (List<Board>) ibatis.queryForList("boards.getBoards", param);
     }
 
-	public void updateBoard(Board board) throws SQLException {
-	    ibatis.update("boards.updateBoard", board);
-	}
-	
-	
-	/**
-	 *  5개 미만의 게시판의 글을 랜덤으로 조회 List
-	 * @methodNamd	:   getRandomBoard
-	 * @author 		:	Han Gi Seon
-	 * @date		:	2024.02.08
-	 * @return
-	 * @throws SQLException
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Board> getRandomBoard() throws SQLException {
-		return (List<Board>)ibatis.queryForList("boards.getRandomBoard");
-	}
+   public void updateBoard(Board board) throws SQLException {
+       ibatis.update("boards.updateBoard", board);
+   }
+   
+   @SuppressWarnings("unchecked")
+      public List<Board> getRandomBoard() throws SQLException {
+         return (List<Board>)ibatis.queryForList("boards.getRandomBoard");
+   }
 
 }
-

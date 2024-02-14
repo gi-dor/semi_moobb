@@ -22,14 +22,16 @@ public class BoardImageDao {
 	}
 	
 	
+	
 	/**
 	 * 모든 이미지 게시글 정보를 조회해서 반환한다.
 	 * @return 모든 이미지 게시글 정보 
 	 * @throws SQLException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<BoardImage> getBoardImage() throws SQLException {
-		return (List<BoardImage>)ibatis.queryForList("board-image.getBoardImage");
+	public List<String> getBoardImages(int boardNo) throws SQLException {
+		return (List<String>)ibatis.queryForList("board-image.getBoardImages", boardNo);
+
 	}
 	
 	/**
@@ -41,6 +43,12 @@ public class BoardImageDao {
 	public BoardImage getBoardImageByNo(int no) throws SQLException {
 		return (BoardImage)ibatis.queryForObject("board-image.getBoardImageByNo", no);
 	}
+	
+	
+	public void deleteBoardImage(int boardNo) throws SQLException {
+	    ibatis.delete("board-image.deleteBoardImage", boardNo);
+	}
+
 	
 	
 	

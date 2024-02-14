@@ -11,15 +11,8 @@ public class AdminDao {
 
 	private SqlMapClient ibatis = IbatisUtil.getSqlMapClient();
 	
-	public void insertUser(Admin admin) throws SQLException{
-		ibatis.insert("admins.insertAdmin", admin);
-	}
-	
 	public Admin getAdminById(String id) throws SQLException{
 		return (Admin) ibatis.queryForObject("admins.getAdminById", id);
 	}
-	
-	public Admin getAdminByEmail(String email) throws SQLException{
-		return (Admin) ibatis.queryForObject("admins.getAdminByEmail", email);
-	}
+
 }

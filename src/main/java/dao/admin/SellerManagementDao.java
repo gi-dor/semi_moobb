@@ -16,4 +16,8 @@ public class SellerManagementDao {
 	public List<SellerManagementDto> getSellers(Map<String, Object> param) throws SQLException {
 		return (List<SellerManagementDto>) ibatis.queryForList("seller-management.getSellers", param);
 	}
+	
+	public int getTotalRows(Map<String, Object> param) throws SQLException {
+		return (Integer) ibatis.queryForObject("seller-management.getTotalRows", param);
+	}
 }
